@@ -1,0 +1,30 @@
+{
+  "name": "encryptme",
+  "version": "0.0.1",
+  "description": "Resist to censorship",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chiro-hiro/encryptMe.git"
+  },
+  "keywords": [
+    "encryption",
+    "extension",
+    "browser",
+    "privacy",
+    "human",
+    "right"
+  ],
+  "author": "chiro@fkguru.com",
+  "license": "LGPL",
+  "bugs": {
+    "url": "https://github.com/chiro-hiro/encryptMe/issues"
+  },
+  "homepage": "https://github.com/chiro-hiro/encryptMe#readme",
+  "dependencies": {
+    "aes-js": "^3.1.1"
+  }
+}

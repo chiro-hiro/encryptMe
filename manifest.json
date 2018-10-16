@@ -1,0 +1,24 @@
+{
+    "name": "encrypMe",
+    "description": "Encrypt your content on the Internet",
+    "version": "0.0.1",
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "notifications",
+        "*://*/",
+        "storage"
+    ],
+    "background": {
+        "scripts": [
+            "main.js"
+        ],
+        "persistent": false
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html",
+        "default_title": "Encrypt Me"
+    },
+    "manifest_version": 2
+}
