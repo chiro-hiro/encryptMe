@@ -25,6 +25,10 @@
   },
   "homepage": "https://github.com/chiro-hiro/encryptMe#readme",
   "dependencies": {
-    "aes-js": "^3.1.1"
+    "aes-js": "^3.1.1",
+    "webpack": "^4.20.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.1.2"
   }
 }
