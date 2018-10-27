@@ -3,4 +3,120 @@
     <div>
         <p>[encryptMe]Mary cute[/encryptMe]</p>
     </div>
+    <input id="textBox" size="100">
+    <canvas id="myCanvas" width="240" height="240">
+    </canvas>
+
+    <script>
+        var value = new Uint8Array(32);
+        var seed;
+        //XorShift based PRNG
+        //Author: Chiro Hiro <chiro@fkguru.com>
+        //https://gist.github.com/chiro-hiro/2a5c5a881bf6c33d02466b8d59eeaf07
+        function rnd() {
+            var x = 0, i;
+            for (i = 0; i < 32; i++) {
+                //Shift right if [i th] bit is equal to 1, otherwise shift letf
+                x ^= ((seed >> i) & 1) ? seed >> i : seed << i;
+            }
+            return seed = x;
+        }
+
+        function getUint(arrayVal, offset) {
+            return ((arrayVal[offset] << 24)
+                | (arrayVal[offset + 1] << 16)
+                | (arrayVal[offset + 2] << 8)
+                | (arrayVal[offset + 3])) >>> 0;
+        }
+
+        function getSeed(arrayVal) {
+            var ret = 0;
+            for (var i = 0; i < arrayVal.length; i += 4) {
+                ret ^= getUint(arrayVal, i);
+            }
+            return ret;
+        }
+
+        function getOpacity(byteVal) {
+            return (Math.round(((byteVal & 255) * 1000) / 255) / 1000).toString();
+        }
+
+        function getColor(val) {
+            return 'rgba('
+                + (val & 0xff).toString() + ','
+                + ((val >> 8) & 0xff).toString() + ','
+                + ((val >> 16) & 0xff).toString() + ','
+                + getOpacity(val >> 24) + ')';
+        }
+
+        function generateUint(s) {
+            return ((s ^ rnd()) >>> 0);
+        }
+
+        function uniqueImage(context, width, height, arrayVal) {
+            var el = ((arrayVal.length / 4) | 0) + 4;
+            var cx = width / 2;
+            var cy = height / 2;
+            var step = cx / el;
+            var r = cx;
+            //context.beginPath();
+            var x = cx;
+            var y = cy;
+
+            for (var i = 0; i < arrayVal.length; i += 4) {
+                context.moveTo(x, y);
+                var s = getUint(arrayVal, i);
+                var t = generateUint(s);
+                var b = generateUint(s);
+                var e = generateUint(s) / 0xffffffff;
+                var lt = 0;
+
+                switch (t % 4) {
+                    //Up
+                    case 0:
+                        y -= b % cx;
+                        break;
+                    //Left
+                    case 1:
+                        x -= b % cx;
+                        break;
+                    //Down
+                    case 2:
+                        y += b % cx;
+                        break;
+                    //Right
+                    case 3:
+                        x += b % cx;
+                        break;
+
+                }
+                context.lineTo(x, y);
+                /*
+                        context.fillStyle = getColor(c);
+                        context.arc(cx, cy, r, b * Math.PI, e * Math.PI, s % 2 == 0);
+                        context.lineTo(cx, cy);
+                        r -= step;
+                        context.fill();
+                */
+                console.log(x, y, t % 4, b % cx);
+                lt = t % 4;
+                context.stroke();
+            }
+            //context.closePath();
+        }
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        function render() {
+            window.crypto.getRandomValues(value);
+            seed = getSeed(value);
+            textBox.value = '';
+            for (var i = 0; i < value.length; i++) {
+                textBox.value += value[i].toString(16);
+            }
+            ctx.clearRect(0, 0, c.width, c.height);
+            uniqueImage(ctx, c.width, c.height, value);
+        }
+        render();
+    </script>
+    <button onclick="render()">Render</button>
 </body>

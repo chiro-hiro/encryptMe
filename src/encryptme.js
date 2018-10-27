@@ -1,11 +1,14 @@
 'use strict';
 
 var aesjs = require('aes-js');
+var sha256 = require("crypto-js/sha256");
+var elliptic = require('elliptic').ec;
 
 var text = 'chào bạn tôi là chiro';
 var textBytes = aesjs.utils.utf8.toBytes(text);
-var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
-console.log(textBytes, textBytes);
+var decryptedText = aesjs.utils.utf8.fromBytes(textBytes);
+
+console.log(textBytes, decryptedText, sha256("Hello"));
 
 /*
 
@@ -57,4 +60,6 @@ console.log(decryptedText);
             console.log(e.getContent(encrypted[i]));
         }
     }
-})//();
+})();
+
+window.chiro = true;

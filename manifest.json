@@ -6,12 +6,13 @@
         "activeTab",
         "tabs",
         "notifications",
-        "*://*",
+        "*://*/",
+        "file://*/*",
         "storage"
     ],
     "background": {
         "scripts": [
-            "dist/main.js"
+            "./dist/main.js"
         ],
         "persistent": true
     },
